@@ -1,0 +1,346 @@
+# File Structure for MrManager Bot
+
+MrManager/
+├── __init__.py
+├── __main__.py
+├── config.py
+├── bot.py
+├── logger.py
+├── plugins/
+│   ├── __init__.py
+│   ├── start.py
+│   ├── help.py
+│   ├── admin.py
+│   ├── moderation.py
+│   ├── info.py
+│   └── settings.py
+└── helpers/
+    ├── __init__.py
+    ├── decorators.py
+    └── utils.py
+
+# Installation and Setup:
+# 1. Create the directory structure as shown above
+# 2. Copy each file content to respective file
+# 3. Install requirements: pip install pyrogram tgcrypto python-dotenv
+# 4. Create .env file with your credentials
+# 5. Run: python -m MrManager
+
+
+
+
+
+# ============================================================
+# FILE: .env (Create this file in the root directory)
+# ============================================================
+# Copy this template and fill in your values
+
+# Bot Credentials (Required)
+API_ID=12345678
+API_HASH=your_api_hash_here
+BOT_TOKEN=your_bot_token_here
+
+# Logging (Optional)
+LOG_LEVEL=INFO  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+# Bot Settings (Optional)
+BOT_USERNAME=mrmanager_bot
+SUDO_USERS=123456789,987654321  # Comma-separated user IDs
+
+# ============================================================
+# FILE: requirements.txt
+# ============================================================
+pyrogram>=2.0.0
+tgcrypto>=1.2.5
+python-dotenv>=1.0.0
+
+# ============================================================
+# FILE: README.md
+# ============================================================
+# MrManager Bot
+
+A modular Telegram group management bot built with Pyrogram.
+
+## Features
+
+✨ **Moderation Commands**
+- Kick, ban, unban users
+- Mute and unmute members
+- Delete and purge messages
+
+📌 **Admin Tools**
+- Pin and unpin messages
+- Promote and demote users
+- Manage chat settings
+
+ℹ️ **Information Commands**
+- User and chat info
+- Statistics and admin list
+- ID lookup
+
+⚙️ **Chat Settings**
+- Lock and unlock chat
+- Set chat photo, title, and description
+
+## Installation
+
+1. **Clone or download this repository**
+
+2. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+3. **Create .env file**
+Create a `.env` file in the root directory with your credentials:
+```env
+API_ID=12345678
+API_HASH=your_api_hash_here
+BOT_TOKEN=your_bot_token_here
+LOG_LEVEL=INFO
+SUDO_USERS=your_user_id
+```
+
+4. **Run the bot**
+```bash
+python -m MrManager
+```
+
+## Project Structure
+
+```
+MrManager/
+├── __init__.py           # Package initialization
+├── __main__.py           # Entry point
+├── config.py             # Configuration management
+├── logger.py             # Logging setup
+├── bot.py                # Bot client
+├── plugins/              # Command handlers
+│   ├── __init__.py
+│   ├── start.py          # Start command
+│   ├── help.py           # Help command
+│   ├── admin.py          # Admin commands
+│   ├── moderation.py     # Moderation commands
+│   ├── info.py           # Info commands
+│   └── settings.py       # Settings commands
+└── helpers/              # Helper utilities
+    ├── __init__.py
+    ├── decorators.py     # Custom decorators
+    └── utils.py          # Utility functions
+```
+
+## Configuration
+
+### Environment Variables
+
+- `API_ID`: Your Telegram API ID (required)
+- `API_HASH`: Your Telegram API hash (required)
+- `BOT_TOKEN`: Your bot token from @BotFather (required)
+- `LOG_LEVEL`: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) - default: INFO
+- `BOT_USERNAME`: Your bot's username
+- `SUDO_USERS`: Comma-separated list of user IDs with sudo access
+
+### Log Levels
+
+- **DEBUG**: Detailed information for debugging
+- **INFO**: General informational messages (default)
+- **WARNING**: Warning messages
+- **ERROR**: Error messages
+- **CRITICAL**: Critical issues
+
+## Adding New Plugins
+
+To add a new plugin, create a new file in the `plugins/` directory:
+
+```python
+from pyrogram import Client, filters
+from pyrogram.types import Message
+from ..helpers.decorators import log_command, admin_only, group_only
+from ..logger import logger
+
+@Client.on_message(filters.command("mycommand"))
+@log_command
+@group_only
+@admin_only
+async def my_command(client: Client, message: Message):
+    """My custom command."""
+    await message.reply_text("Hello from my command!")
+    logger.info("My command executed")
+```
+
+## Available Decorators
+
+The bot includes several useful decorators in `helpers/decorators.py`:
+
+- `@admin_only`: Restricts command to group admins
+- `@sudo_only`: Restricts command to sudo users (defined in config)
+- `@group_only`: Restricts command to group chats
+- `@private_only`: Restricts command to private chats
+- `@log_command`: Logs command usage
+
+## Usage Examples
+
+### Basic Commands
+- `/start` - Start the bot (private chat only)
+- `/help` - Show help message
+- `/id` - Get your user ID and chat ID
+- `/info` - Get user information (reply to get other user's info)
+
+### Admin Commands (Groups Only)
+- `/kick` - Kick a user (reply to their message)
+- `/ban` - Ban a user (reply to their message)
+- `/mute` - Mute a user (reply to their message)
+- `/pin` - Pin a message (reply to the message)
+- `/promote` - Promote user to admin (reply to their message)
+- `/lock` - Lock chat for non-admins
+- `/settitle New Title` - Set new chat title
+
+## Requirements
+
+- Python 3.7+
+- Pyrogram 2.0+
+- TgCrypto
+- python-dotenv
+
+## Getting API Credentials
+
+1. Go to https://my.telegram.org
+2. Log in with your phone number
+3. Click on "API Development Tools"
+4. Create a new application
+5. Copy your `API_ID` and `API_HASH`
+
+## Getting Bot Token
+
+1. Message @BotFather on Telegram
+2. Send `/newbot` and follow the instructions
+3. Copy the bot token provided
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Developer
+
+Developed by @dotenv with ❤️
+
+## Support
+
+For issues and questions, please open an issue on the repository.
+
+---
+
+**Note**: Make sure to grant necessary admin permissions to the bot in your groups for all features to work properly.
+
+# ============================================================
+# INSTALLATION INSTRUCTIONS
+# ============================================================
+
+## Step-by-Step Setup:
+
+1. **Create the directory structure:**
+```bash
+mkdir -p MrManager/plugins MrManager/helpers
+```
+
+2. **Create all the files:**
+- Copy each file content from above into respective files
+- Make sure to maintain the exact directory structure
+
+3. **Create and activate virtual environment (recommended):**
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+4. **Install requirements:**
+```bash
+pip install pyrogram tgcrypto python-dotenv
+```
+
+5. **Create .env file in the root directory (same level as MrManager folder):**
+```env
+API_ID=12345678
+API_HASH=your_api_hash_here
+BOT_TOKEN=your_bot_token_here
+LOG_LEVEL=INFO
+SUDO_USERS=your_user_id
+```
+
+6. **Run the bot:**
+```bash
+python -m MrManager
+```
+
+## File Checklist:
+
+Root Directory:
+- [ ] .env
+- [ ] requirements.txt
+- [ ] README.md
+
+MrManager/:
+- [ ] __init__.py
+- [ ] __main__.py
+- [ ] config.py
+- [ ] logger.py
+- [ ] bot.py
+
+MrManager/plugins/:
+- [ ] __init__.py
+- [ ] start.py
+- [ ] help.py
+- [ ] admin.py
+- [ ] moderation.py
+- [ ] info.py
+- [ ] settings.py
+
+MrManager/helpers/:
+- [ ] __init__.py
+- [ ] decorators.py
+- [ ] utils.py
+
+## Testing:
+
+1. Start the bot: `python -m MrManager`
+2. You should see: "🚀 Bot started as @your_bot_username"
+3. Send `/start` to your bot in private chat
+4. Add the bot to a test group and try commands like `/help`, `/id`, etc.
+
+## Customization:
+
+### Change Log Level:
+In .env file, set LOG_LEVEL to one of: DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+### Add Sudo Users:
+In .env file, add user IDs: SUDO_USERS=123456789,987654321
+
+### Add New Commands:
+Create a new file in plugins/ folder and use the decorators for easy implementation
+
+## Troubleshooting:
+
+1. **Bot not starting?**
+   - Check if all credentials in .env are correct
+   - Verify API_ID is a number, not a string
+   - Make sure BOT_TOKEN is valid
+
+2. **Commands not working?**
+   - Ensure bot has admin rights in the group
+   - Check if command is meant for groups or private chat
+   - Verify decorators are applied correctly
+
+3. **Import errors?**
+   - Make sure you're running from parent directory: `python -m MrManager`
+   - Check if all __init__.py files are present
+   - Verify all dependencies are installed
+
+## Example Usage in Group:
+
+1. Add bot to group
+2. Promote bot to admin with required permissions
+3. Try commands:
+   - Reply to a message and use `/kick`
+   - Use `/lock` to lock chat
+   - Use `/stats` to see group statistics
+   - Use `/admins` to list all admins
